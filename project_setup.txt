@@ -1,0 +1,13 @@
+1. create utils folder
+
+2. create virtualenv with pyenv:
+	pyenv virtualenv 3.6.4 yelp_utils
+
+3. set local pyenv to project:
+	pyenv local yelp_utils
+
+4. install pipenv:
+	pip install pipenv
+
+5. install mongodb
+	pipenv install pymongo
