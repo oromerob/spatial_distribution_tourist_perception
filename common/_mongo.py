@@ -4,8 +4,8 @@ import pymongo
 from pymongo.errors import BulkWriteError
 
 
-def mongo_get(col=None, filter=None, fields=None, page_size=100000):
-    if col is None:
+def mongo_get(collection=None, filter=None, fields=None, page_size=100000):
+    if collection is None:
         raise Exception
     if filter is None:
         filter = {}
@@ -15,14 +15,14 @@ def mongo_get(col=None, filter=None, fields=None, page_size=100000):
 
     client = pymongo.MongoClient('localhost', 27018)
     db = client.yelp
-    col = db[col]
+    col = db[collection]
 
     page = 0
 
     res = []
 
     while True:
-        print('Querying "{}" page {}...'.format(col, page))
+        print('Querying "{}" page {}...'.format(collection, page))
 
         cursor = col.find(*find_params).skip(page_size * page).limit(page)
 
@@ -37,7 +37,7 @@ def mongo_get(col=None, filter=None, fields=None, page_size=100000):
 
     client.close()
 
-    print('Returning {} elements from "{}"'.format(len(res), col))
+    print('Returning {} elements from "{}"'.format(len(res), collection))
     return res
 
 
