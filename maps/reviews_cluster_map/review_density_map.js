@@ -160,14 +160,23 @@ function mapInit() {
             };
 
             function style(feature) {
-                if (feature.properties[currentUserType] < max / 20) {
+                if (feature.properties[currentUserType] < max * 0.143 && currentVisualisationType === 'lineal') {
                     return {
-                        fillColor: getColor(feature.properties[currentUserType]),
+                        fillColor: '#ffffff',
                         weight: 0,
                         opacity: 0,
                         color: 'white',
                         dashArray: '3',
-                        //fillOpacity: 0.5
+                        fillOpacity: 0
+                    }
+                }
+                if (feature.properties[currentUserType] < max / 128 && currentVisualisationType === 'exponential') {
+                    return {
+                        fillColor: '#ffffff',
+                        weight: 0,
+                        opacity: 0,
+                        color: 'white',
+                        dashArray: '3',
                         fillOpacity: 0
                     }
                 }
@@ -180,6 +189,10 @@ function mapInit() {
                     //fillOpacity: 0.5
                     fillOpacity: feature.properties[currentUserType] / (max * 2) + 0.3
                 };
+            }
+
+            function styleParameters(feature) {
+
             }
 
             info.addTo(mymap);
@@ -201,22 +214,22 @@ function map_prepare(geojson, callback) {
             case 'lineal':
                 var diff = 0.143;
                 return d > max * diff * 7 ? '#800026' :
-                       d > max * diff * 6  ? '#BD0026' :
-                       d > max * diff * 5  ? '#E31A1C' :
-                       d > max * diff * 4  ? '#FC4E2A' :
-                       d > max * diff * 3   ? '#FD8D3C' :
-                       d > max * diff * 2   ? '#FEB24C' :
-                       d > max * diff   ? '#FED976' :
+                       d > max * diff * 6 ? '#BD0026' :
+                       d > max * diff * 5 ? '#E31A1C' :
+                       d > max * diff * 4 ? '#FC4E2A' :
+                       d > max * diff * 3 ? '#FD8D3C' :
+                       d > max * diff * 2 ? '#FEB24C' :
+                       d > max * diff ? '#FED976' :
                                   '#FFEDA0';
             case 'exponential':
                 // every range is half the previous
                 return d > max / 2 ? '#800026' :
-                       d > max / 4  ? '#BD0026' :
-                       d > max / 8  ? '#E31A1C' :
-                       d > max / 16  ? '#FC4E2A' :
-                       d > max / 32   ? '#FD8D3C' :
-                       d > max / 64   ? '#FEB24C' :
-                       d > max / 128   ? '#FED976' :
+                       d > max / 4 ? '#BD0026' :
+                       d > max / 8 ? '#E31A1C' :
+                       d > max / 16 ? '#FC4E2A' :
+                       d > max / 32 ? '#FD8D3C' :
+                       d > max / 64 ? '#FEB24C' :
+                       d > max / 128 ? '#FED976' :
                                   '#FFEDA0';
         }
     }
