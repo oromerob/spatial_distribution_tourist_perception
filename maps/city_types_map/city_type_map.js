@@ -1,7 +1,9 @@
+'use strict';
+
 var cities = {
     '182_401': { name: 'Las Vegas', center: [36.12132391022011, -115.17354693892297]},
     '191_410': { name: 'Phoenix', center: [33.4921276010644,﻿-111.989647273247]},
-    '254_376': { name: 'Madison', center: ﻿[43.0732804686872, -89.404797336763]},
+    '254_376': { name: 'Madison', center:﻿[43.0732804686872, -89.404797336763]},
     '258_388': { name: 'Champaign', center:﻿[40.1131094156656, -88.2454785015358]},
     '277_382': { name: 'Cleveland', center:﻿[41.419884872072, -81.6533449693633]},
     '280_404': { name: 'Charlotte', center:﻿[35.2139987534837, -80.8301755849596]},
@@ -19,10 +21,10 @@ var cityTypes = {
     cultural: 'Cultural City',
     historic: 'Historic City',
     business: 'Business City'
-}
+};
 var currentCity = '182_401';
 var currentCityType = 'tourist';
-var currentVisualisationType = 'lineal'
+var currentVisualisationType = 'lineal';
 var mymap;
 
 

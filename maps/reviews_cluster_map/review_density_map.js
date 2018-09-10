@@ -160,39 +160,17 @@ function mapInit() {
             };
 
             function style(feature) {
-                if (feature.properties[currentUserType] < max * 0.143 && currentVisualisationType === 'lineal') {
-                    return {
-                        fillColor: '#ffffff',
-                        weight: 0,
-                        opacity: 0,
-                        color: 'white',
-                        dashArray: '3',
-                        fillOpacity: 0
-                    }
-                }
-                if (feature.properties[currentUserType] < max / 128 && currentVisualisationType === 'exponential') {
-                    return {
-                        fillColor: '#ffffff',
-                        weight: 0,
-                        opacity: 0,
-                        color: 'white',
-                        dashArray: '3',
-                        fillOpacity: 0
-                    }
-                }
                 return {
                     fillColor: getColor(feature.properties[currentUserType]),
                     weight: 2,
-                    opacity: 1,
+                    opacity:
+                        feature.properties[currentUserType] < max / 256 && currentVisualisationType === 'exponential' ? 0:
+                        feature.properties[currentUserType] < max * 0.111 && currentVisualisationType === 'lineal'? 0:
+                        1,
                     color: 'white',
                     dashArray: '3',
-                    //fillOpacity: 0.5
                     fillOpacity: feature.properties[currentUserType] / (max * 2) + 0.3
                 };
-            }
-
-            function styleParameters(feature) {
-
             }
 
             info.addTo(mymap);
@@ -212,15 +190,25 @@ function map_prepare(geojson, callback) {
     function getColor(d) {
         switch (currentVisualisationType) {
             case 'lineal':
-                var diff = 0.143;
-                return d > max * diff * 7 ? '#800026' :
-                       d > max * diff * 6 ? '#BD0026' :
-                       d > max * diff * 5 ? '#E31A1C' :
-                       d > max * diff * 4 ? '#FC4E2A' :
-                       d > max * diff * 3 ? '#FD8D3C' :
-                       d > max * diff * 2 ? '#FEB24C' :
-                       d > max * diff ? '#FED976' :
-                                  '#FFEDA0';
+                // var diff = 0.143;
+                var diff = 0.111;
+                return d > max * diff * 8 ? '#800026' :
+                       d > max * diff * 7 ? '#BD0026' :
+                       d > max * diff * 6 ? '#E31A1C' :
+                       d > max * diff * 5 ? '#FC4E2A' :
+                       d > max * diff * 4 ? '#FD8D3C' :
+                       d > max * diff * 3 ? '#FEB24C' :
+                       d > max * diff * 2 ? '#FED976' :
+                       d > max * diff ? '#FFEDA0' :
+                                  '#ffffff';
+                // return d > max * diff * 7 ? '#800026' :
+                //        d > max * diff * 6 ? '#BD0026' :
+                //        d > max * diff * 5 ? '#E31A1C' :
+                //        d > max * diff * 4 ? '#FC4E2A' :
+                //        d > max * diff * 3 ? '#FD8D3C' :
+                //        d > max * diff * 2 ? '#FEB24C' :
+                //        d > max * diff ? '#FED976' :
+                //                   '#FFEDA0';
             case 'exponential':
                 // every range is half the previous
                 return d > max / 2 ? '#800026' :
@@ -230,7 +218,16 @@ function map_prepare(geojson, callback) {
                        d > max / 32 ? '#FD8D3C' :
                        d > max / 64 ? '#FEB24C' :
                        d > max / 128 ? '#FED976' :
-                                  '#FFEDA0';
+                       d > max / 256 ? '#FFEDA0' :
+                                  '#ffffff';
+                // return d > max / 2 ? '#800026' :
+                //        d > max / 4 ? '#BD0026' :
+                //        d > max / 8 ? '#E31A1C' :
+                //        d > max / 16 ? '#FC4E2A' :
+                //        d > max / 32 ? '#FD8D3C' :
+                //        d > max / 64 ? '#FEB24C' :
+                //        d > max / 128 ? '#FED976' :
+                //                   '#FFEDA0';
         }
     }
 
