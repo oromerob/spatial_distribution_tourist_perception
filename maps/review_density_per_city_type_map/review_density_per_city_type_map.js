@@ -24,13 +24,15 @@ var userTypes = {
     'all': 'All',
     'locals': 'Locals',
     'visitors': 'Visitors',
-    'visitors_proportion': 'Visitor overall'
+    'visitors_proportion': 'Visitor overall',
+    'visitors_special': 'Visitors special'
 };
 var currentCity = '182_401';
 var currentCityType = 'tourist';
 var currentUserType = 'all';
 var currentVisualisationType = 'lineal';
 var zoom = 11;
+var currentZoom = 15;
 var mymap;
 
 
@@ -48,6 +50,15 @@ function loadJSON(filename, callback) {
     xobj.send(null);
 }
 
+function zoomSelectInit() {
+    var zoomSelect = document.getElementById("zoom");
+    zoomSelect.addEventListener("change", function() {
+        // console.log(zoomSelect.value);
+        currentUserType = zoomSelect.value;
+        mapInit();
+    });
+    return;
+}
 
 function citiesSelectInit() {
     var citiesSelect = document.getElementById("cities");
@@ -74,7 +85,7 @@ function cityTypesSelectInit() {
         cityTypesSelect.add(option);
     }
     cityTypesSelect.addEventListener("change", function() {
-        // console.log(cityTypesSelect.value);
+        console.log(cityTypesSelect.value);
         currentCityType = cityTypesSelect.value;
         mapInit();
     });
@@ -84,7 +95,7 @@ function cityTypesSelectInit() {
 function userTypesSelectInit() {
     var userTypesSelect = document.getElementById("userTypes");
     userTypesSelect.addEventListener("change", function() {
-        // console.log(userTypesSelect.value);
+        console.log(userTypesSelect.value);
         currentUserType = userTypesSelect.value;
         mapInit();
     });
@@ -94,7 +105,7 @@ function userTypesSelectInit() {
 function visualisationTypesSelectInit() {
     var visualisationTypesSelect = document.getElementById("visualisationTypes");
     visualisationTypesSelect.addEventListener("change", function() {
-        // console.log(visualisationTypesSelect.value);
+        console.log(visualisationTypesSelect.value);
         currentVisualisationType = visualisationTypesSelect.value;
         mapInit();
     });
@@ -102,6 +113,7 @@ function visualisationTypesSelectInit() {
 }
 
 function page_init() {
+    zoomSelectInit();
     citiesSelectInit();
     cityTypesSelectInit();
     userTypesSelectInit();
@@ -112,7 +124,7 @@ function page_init() {
 page_init();
 
 function geojsonLoad(callback) {
-    var jsonFileName = currentCity + '_z15.json';
+    var jsonFileName = currentCity + '_z' + currentZoom + '.json';
     loadJSON(jsonFileName, function(response) {
         // Parse JSON string into object
         geojson = JSON.parse(response)[currentCityType];
@@ -121,18 +133,12 @@ function geojsonLoad(callback) {
 }
 
 function mapInit() {
-    var GeoJSON = null;
-
     if (mymap != null) {
         mymap.remove()
     }
-
-
     geojsonLoad(function(geojson) {
-        // console.log(geojson);
-        GeoJSON = geojson;
-        console.log(GeoJSON);
-        map_prepare(GeoJSON, function(getColor, max) {
+        console.log(geojson);
+        map_prepare(geojson, function(getColor, max) {
             mymap = L.map('mapid').setView(cities[currentCity].center, zoom);
 
             L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -189,7 +195,7 @@ function mapInit() {
 
             // method that we will use to update the control based on feature properties passed
             info.update = function (props) {
-                // console.log('props: ', props);
+                console.log('props: ', props);
                 this._div.innerHTML = '<h4>' + userTypes[currentUserType] + ' reviews</h4>' +  (props ?
                     props[currentUserType] + ' reviews' : 'Hover over a tile');
             };
@@ -205,7 +211,10 @@ function mapInit() {
                     color: 'white',
                     dashArray: '3',
                     //fillOpacity: 0.5
-                    fillOpacity: feature.properties[currentUserType] / (max * 2) + 0.3
+                    fillOpacity:
+                        feature.properties[currentUserType] < max / 256 && currentVisualisationType === 'exponential' ? 0:
+                        feature.properties[currentUserType] < max * 0.111 && currentVisualisationType === 'lineal'? 0:
+                        feature.properties[currentUserType] / (max * 2) + 0.3
                 };
             }
 

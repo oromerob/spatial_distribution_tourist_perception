@@ -32,6 +32,10 @@
 <body>
 
 <div id="controls">
+    <select id="zoom">
+        <option value="15" default>Zoom 15</option>
+        <option value="18">Zoom 18</option>
+    </select>
     <select id="cities">
         <!-- <option value="" default>Select a city...</option> -->
     </select>
@@ -43,6 +47,7 @@
         <option value="locals">Reviews from locals</option>
         <option value="visitors">Reviews from visitors</option>
         <option value="visitors_proportion">Visitor reviews over all</option>
+        <option value="visitors_special">Visitor special visualisation</option>
     </select>
     <select id="visualisationTypes">
         <option value="lineal" default>Lineal ranges</option>
@@ -52,7 +57,7 @@
 
 <div id="mapid"></div>
 
-<script src="review_density_per_city_type_map.js"></script>
+<script src="review_density_per_city_type_map.js?7"></script>
 
 </body>
 </html>

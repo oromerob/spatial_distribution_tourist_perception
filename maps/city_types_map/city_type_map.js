@@ -98,7 +98,7 @@ function geojsonLoad(callback) {
     var jsonFileName = currentCity + '_' + currentCityType + '_z15.json';
     loadJSON(jsonFileName, function(response) {
         // Parse JSON string into object
-        geojson = JSON.parse(response);
+        var geojson = JSON.parse(response);
         callback(geojson);
     });
 }
