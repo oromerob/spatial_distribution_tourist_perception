@@ -1,41 +1,5 @@
-import pymongo
 from public_venue_categories import venue_categories
-
-
-def clusters_get():
-    client = pymongo.MongoClient('localhost', 27018)
-    db = client.yelp
-    collection = db['clusters']
-
-    cursor = collection.find({}, {'tiles': 1, 'name': 1})
-    return [doc for doc in cursor]
-
-
-def business_ids_get(tiles):
-    client = pymongo.MongoClient('localhost', 27018)
-    db = client.yelp
-    collection = db['prepro_business']
-
-    cursor = collection.find({"tile10": {'$in': tiles}}, {})
-    return [doc['_id'] for doc in cursor]
-
-
-def business_get(ids):
-    client = pymongo.MongoClient('localhost', 27018)
-    db = client.yelp
-    collection = db['business']
-
-    cursor = collection.find({"_id": {'$in': ids}}, {'name': 1, 'categories': 1})
-    return [doc for doc in cursor]
-
-#
-# def reviews_count(business_ids):
-#     client = pymongo.MongoClient('localhost', 27018)
-#     db = client.yelp
-#     collection = db['review']
-#
-#     count = collection.count({'business_id': {'$in': business_ids}})
-#     print(count)
+from common import _mongo as mongo_utils
 
 
 def category_dict_prepare():
@@ -64,18 +28,15 @@ def venues_prepare(venues, category_dict, cluster):
     return _venues
 
 
-def venues_save(venues):
-    client = pymongo.MongoClient('localhost', 27018)
-    db = client.yelp
-    collection = db['venues']
-    ids = collection.insert_many(venues).inserted_ids
-
-
 if __name__ == '__main__':
     category_dict = category_dict_prepare()
-    for cluster in clusters_get():
+    for cluster in mongo_utils.mongo_get(collection='clusters', fields={'tiles': 1, 'name': 1}):
         print('processing venues for ', cluster['name'])
-        business_ids = business_ids_get(cluster['tiles'])
-        business = business_get(business_ids)
+        # business_ids = business_ids_get(cluster['tiles'])
+        business_ids = [doc['_id'] for doc in mongo_utils.mongo_get(collection='prepro_business', filter={"tile10": {'$in': cluster['tiles']}}, fields={})]
+        # business = business_get(business_ids)
+        business = mongo_utils.mongo_get(collection='business', filter={"_id": {'$in': business_ids}}, fields={'name': 1, 'categories': 1})
         venues = venues_prepare(business, category_dict, cluster)
-        venues_save(venues)
+        # venues_save(venues)
+        mongo_utils.batch_upsert(venues, collection='venues', update='{"$set": item}')
+        print('Inserted {} items for "{}" cluster'.format(len(venues), cluster['name']))

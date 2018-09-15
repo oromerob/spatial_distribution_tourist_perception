@@ -72,6 +72,7 @@ def batch_update(items, collection=None, update=None, page_size=500):
         if _to == len(items):
             break
 
+    print('\n')
     client.close()
 
 
@@ -106,4 +107,5 @@ def batch_upsert(items, collection=None, update=None, page_size=500):
         if _to == len(items):
             break
 
+    print('\n')
     client.close()

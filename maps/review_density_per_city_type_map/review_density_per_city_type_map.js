@@ -54,7 +54,8 @@ function zoomSelectInit() {
     var zoomSelect = document.getElementById("zoom");
     zoomSelect.addEventListener("change", function() {
         // console.log(zoomSelect.value);
-        currentUserType = zoomSelect.value;
+        currentZoom = zoomSelect.value;
+        zoom = currentZoom === 15 ? 11: 13;
         mapInit();
     });
     return;
@@ -230,6 +231,7 @@ function mapInit() {
 }
 
 function map_prepare(geojson, callback) {
+    console.log('currentUserType: ', currentUserType);
     var max = Math.max.apply(Math, geojson.features.map(function(o) { return o.properties[currentUserType]; }));
     console.log('max: ', max);
     function getColor(d) {
