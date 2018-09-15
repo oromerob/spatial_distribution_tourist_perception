@@ -20,7 +20,8 @@ def num2deg(xtile, ytile, zoom):
 def tile_boundaries(xtile, ytile, zoom):
   top_latitude, left_longitude = num2deg(xtile, ytile, zoom)
   bottom_latitude, right_longitude = num2deg(xtile + 1, ytile + 1, zoom)
-  return [float("%.3f" % top_latitude), float("%.3f" % left_longitude),  float("%.3f" % bottom_latitude),  float("%.3f" % right_longitude)]
+  # return [float("%.3f" % top_latitude), float("%.3f" % left_longitude),  float("%.3f" % bottom_latitude),  float("%.3f" % right_longitude)]
+  return [top_latitude, left_longitude,  bottom_latitude,  right_longitude]
 
 
 if __name__ == '__main__':
