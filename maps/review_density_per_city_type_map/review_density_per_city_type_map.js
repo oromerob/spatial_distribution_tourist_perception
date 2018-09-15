@@ -53,9 +53,11 @@ function loadJSON(filename, callback) {
 function zoomSelectInit() {
     var zoomSelect = document.getElementById("zoom");
     zoomSelect.addEventListener("change", function() {
-        // console.log(zoomSelect.value);
-        currentZoom = zoomSelect.value;
-        zoom = currentZoom === 15 ? 11: 13;
+        // LogWrite(zoomSelect.value);
+        currentZoom = parseInt(zoomSelect.value);
+        LogWrite('currentZoom: ' + currentZoom);
+        zoom = currentZoom === 18 ? 13: 11;
+        LogWrite('zoom: ' + zoom);
         mapInit();
     });
     return;
@@ -70,7 +72,7 @@ function citiesSelectInit() {
         citiesSelect.add(option);
     }
     citiesSelect.addEventListener("change", function() {
-        console.log(citiesSelect.value);
+        // LogWrite(citiesSelect.value);
         currentCity = citiesSelect.value;
         mapInit();
     });
@@ -86,7 +88,7 @@ function cityTypesSelectInit() {
         cityTypesSelect.add(option);
     }
     cityTypesSelect.addEventListener("change", function() {
-        console.log(cityTypesSelect.value);
+        // LogWrite(cityTypesSelect.value);
         currentCityType = cityTypesSelect.value;
         mapInit();
     });
@@ -96,7 +98,7 @@ function cityTypesSelectInit() {
 function userTypesSelectInit() {
     var userTypesSelect = document.getElementById("userTypes");
     userTypesSelect.addEventListener("change", function() {
-        console.log(userTypesSelect.value);
+        // LogWrite(userTypesSelect.value);
         currentUserType = userTypesSelect.value;
         mapInit();
     });
@@ -106,7 +108,7 @@ function userTypesSelectInit() {
 function visualisationTypesSelectInit() {
     var visualisationTypesSelect = document.getElementById("visualisationTypes");
     visualisationTypesSelect.addEventListener("change", function() {
-        console.log(visualisationTypesSelect.value);
+        // LogWrite(visualisationTypesSelect.value);
         currentVisualisationType = visualisationTypesSelect.value;
         mapInit();
     });
@@ -138,7 +140,7 @@ function mapInit() {
         mymap.remove()
     }
     geojsonLoad(function(geojson) {
-        console.log(geojson);
+        // LogWrite(geojson);
         map_prepare(geojson, function(getColor, max) {
             mymap = L.map('mapid').setView(cities[currentCity].center, zoom);
 
@@ -196,7 +198,7 @@ function mapInit() {
 
             // method that we will use to update the control based on feature properties passed
             info.update = function (props) {
-                console.log('props: ', props);
+                // LogWrite('props: ', props);
                 this._div.innerHTML = '<h4>' + userTypes[currentUserType] + ' reviews</h4>' +  (props ?
                     props[currentUserType] + ' reviews' : 'Hover over a tile');
             };
@@ -204,7 +206,8 @@ function mapInit() {
             function style(feature) {
                 return {
                     fillColor: getColor(feature.properties[currentUserType]),
-                    weight: 2,
+                    // weight: 2,
+                    weight: 1,
                     opacity:
                         feature.properties[currentUserType] < max / 256 && currentVisualisationType === 'exponential' ? 0:
                         feature.properties[currentUserType] < max * 0.111 && currentVisualisationType === 'lineal'? 0:
@@ -231,11 +234,11 @@ function mapInit() {
 }
 
 function map_prepare(geojson, callback) {
-    console.log('currentUserType: ', currentUserType);
+    // LogWrite('currentUserType: ', currentUserType);
     var max = Math.max.apply(Math, geojson.features.map(function(o) { return o.properties[currentUserType]; }));
-    console.log('max: ', max);
+    // LogWrite('max: ', max);
     function getColor(d) {
-        // console.log('value: ', d);
+        // LogWrite('value: ', d);
         switch (currentVisualisationType) {
             case 'lineal':
                 var diff = 0.111;
@@ -266,7 +269,9 @@ function map_prepare(geojson, callback) {
 }
 
 
-
+function LogWrite(log) {
+    console.log(log);
+}
 
 
 
