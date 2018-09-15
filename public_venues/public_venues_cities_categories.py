@@ -32,11 +32,8 @@ if __name__ == '__main__':
     category_dict = category_dict_prepare()
     for cluster in mongo_utils.mongo_get(collection='clusters', fields={'tiles': 1, 'name': 1}):
         print('processing venues for ', cluster['name'])
-        # business_ids = business_ids_get(cluster['tiles'])
         business_ids = [doc['_id'] for doc in mongo_utils.mongo_get(collection='prepro_business', filter={"tile10": {'$in': cluster['tiles']}}, fields={})]
-        # business = business_get(business_ids)
         business = mongo_utils.mongo_get(collection='business', filter={"_id": {'$in': business_ids}}, fields={'name': 1, 'categories': 1})
         venues = venues_prepare(business, category_dict, cluster)
-        # venues_save(venues)
         mongo_utils.batch_upsert(venues, collection='venues', update='{"$set": item}')
         print('Inserted {} items for "{}" cluster'.format(len(venues), cluster['name']))
