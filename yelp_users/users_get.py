@@ -7,8 +7,7 @@ import time
 import requests
 from bs4 import BeautifulSoup
 
-from common import prepro_user, yelp_user
-from tiles import tiles
+from common import prepro_user, yelp_user, tiles
 
 
 def yelp_user_get(user_id):

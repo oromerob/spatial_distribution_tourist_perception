@@ -2,7 +2,7 @@ import datetime
 import sys
 
 # from common import prepro_user
-from common import _mongo as mongo_utils
+from common import mongo_utils
 
 
 def count_reviews_quartile_assign(user, user_quartile, review_count_quartile_limit, review_present_quartile_limit):

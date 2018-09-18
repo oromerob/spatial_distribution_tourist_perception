@@ -1,6 +1,4 @@
-from common import clusters, prepro_business, venues
-from tiles import tiles
-
+from common import clusters, prepro_business, venues, tiles
 
 
 def main(zoom):

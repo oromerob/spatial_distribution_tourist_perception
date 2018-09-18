@@ -1,6 +1,6 @@
 import sys
 
-from common import _mongo as mongo_utils
+from common import mongo_utils
 
 
 if __name__ == '__main__':

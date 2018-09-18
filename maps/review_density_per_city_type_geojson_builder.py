@@ -1,9 +1,7 @@
-import copy
 import json
 import os
 
-from common import _mongo as mongo_utils
-from tiles import tiles
+from common import mongo_utils, tiles
 from city_areas import city_types_map
 
 
@@ -77,7 +75,8 @@ def city_clusters_file_save(cluster, geojson_dict, zoom):
 
 
 def main(zoom):
-    clusters = mongo_utils.mongo_get(collection='clusters')
+    # clusters = mongo_utils.mongo_get(collection='clusters')
+    clusters = mongo_utils.mongo_get(collection='cities')
     for cluster in clusters:
         city_types_dict = {
             'tourist': {},
@@ -106,7 +105,8 @@ def main(zoom):
         review_venue_ids_get(locals, cluster['_id'], locals_reviews_venues)
         review_venue_ids_get(visitors, cluster['_id'], visitors_reviews_venues)
 
-        venues = {doc['_id']: doc for doc in mongo_utils.mongo_get(collection='venues', filter={'cluster_id': cluster['_id']}, fields={'tile18': 1, 'tile15': 1, 'category_clusters': 1})}
+        # venues = {doc['_id']: doc for doc in mongo_utils.mongo_get(collection='venues', filter={'cluster_id': cluster['_id']}, fields={'tile18': 1, 'tile15': 1, 'category_clusters': 1})}
+        venues = {doc['_id']: doc for doc in mongo_utils.mongo_get(collection='city_venues', filter={'cluster_id': cluster['_id']}, fields={'tile18': 1, 'tile15': 1, 'category_clusters': 1})}
 
         clusterize_reviews(venues, locals_reviews_venues, city_types_dict, 'locals', zoom)
         clusterize_reviews(venues, visitors_reviews_venues, city_types_dict, 'visitors', zoom)

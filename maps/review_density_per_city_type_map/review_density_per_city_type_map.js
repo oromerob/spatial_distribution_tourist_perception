@@ -1,15 +1,15 @@
 var cities = {
-    '182_401': { name: 'Las Vegas', center: [36.12132391022011, -115.17354693892297]},
-    '191_410': { name: 'Phoenix', center: [33.4921276010644,﻿-111.989647273247]},
-    '254_376': { name: 'Madison', center: ﻿[43.0732804686872, -89.404797336763]},
-    '258_388': { name: 'Champaign', center:﻿[40.1131094156656, -88.2454785015358]},
-    '277_382': { name: 'Cleveland', center:﻿[41.419884872072, -81.6533449693633]},
-    '280_404': { name: 'Charlotte', center:﻿[35.2139987534837, -80.8301755849596]},
-    '283_386': { name: 'Pittsburgh', center:﻿[40.4434145024169, -79.9784704023696]},
-    '284_373': { name: 'Toronto', center:﻿[43.7069197016944, -79.4292026234179]},
-    '300_364': { name: 'Montréal', center:﻿[45.5113216264028, -73.614013097276]},
-    '498_310': { name: 'Inverness', center:﻿[57.4669637505637, -4.22542674991788]},
-    '499_319': { name: 'Edinburgh', center:﻿[55.9510429610808, -3.20057715313665]}
+    '182_401': { name: 'Las Vegas', center: [36.1068146101184, -115.175170898438]},
+    '191_410': { name: 'Phoenix', center: [33.5001785282423, -111.923217773438]},
+    '254_376': { name: 'Madison', center: ﻿[43.0729005814932, -89.3902587890625]},
+    '258_388': { name: 'Champaign', center:﻿[40.1074874190124, -88.2257080078125]},
+    '277_382': { name: 'Cleveland', center:﻿[41.4962353461676, -81.6888427734375]},
+    '280_404': { name: 'Charlotte', center:﻿[35.2231850497018, -80.8428955078125]},
+    '283_386': { name: 'Pittsburgh', center:﻿[40.4427665933221, -79.9969482421875]},
+    '284_373': { name: 'Toronto', center:﻿[43.6480007990217, -79.3927001953125]},
+    '300_364': { name: 'Montréal', center:﻿[45.5024969938971, -73.5699462890625]},
+    '498_310': { name: 'Inverness', center:﻿[57.4774501605707, -4.2242431640625]},
+    '499_319': { name: 'Edinburgh', center:﻿[55.9522754761094, -3.1915283203125]}
 };
 var cityTypes = {
     tourist: 'Tourist City',
@@ -158,10 +158,10 @@ function mapInit() {
                 var layer = e.target;
 
                 layer.setStyle({
-                    weight: 5,
+                    weight: 3,
                     color: '#666',
                     dashArray: '',
-                    fillOpacity: 0.7
+                    fillOpacity: 0.9 // 0.7
                 });
 
                 if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
@@ -207,7 +207,7 @@ function mapInit() {
                 return {
                     fillColor: getColor(feature.properties[currentUserType]),
                     // weight: 2,
-                    weight: 1,
+                    weight: 0.5,
                     opacity:
                         feature.properties[currentUserType] < max / 256 && currentVisualisationType === 'exponential' ? 0:
                         feature.properties[currentUserType] < max * 0.111 && currentVisualisationType === 'lineal'? 0:
@@ -219,6 +219,7 @@ function mapInit() {
                         feature.properties[currentUserType] < max / 256 && currentVisualisationType === 'exponential' ? 0:
                         feature.properties[currentUserType] < max * 0.111 && currentVisualisationType === 'lineal'? 0:
                         feature.properties[currentUserType] / (max * 2) + 0.3
+                        // 0.5
                 };
             }
 

@@ -1,7 +1,7 @@
 import datetime
 import sys
 
-from common import _mongo as mongo_utils
+from common import mongo_utils
 
 
 def review_distribution_per_city_prepare(user):
@@ -58,7 +58,7 @@ def reviewer_classifier(user):
 
 
     reviews_percentage = len(user['reviews']) / user['review_count']
-    # if the reviews that we have from the same place are less than 1/4 of the total reviews of the user -> tourist
+    # if the reviews that we have are less than 1/4 of the total reviews of the user -> tourist
     if reviews_percentage < 0.25:
         return 'Other', 11
 

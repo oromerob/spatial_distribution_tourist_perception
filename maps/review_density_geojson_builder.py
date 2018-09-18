@@ -1,8 +1,7 @@
 import json
 import os
 
-from common import _mongo as mongo_utils
-from tiles import tiles
+from common import _mongo as mongo_utils, tiles
 
 
 def review_venue_ids_get(users, cluster, venue_id_dict):

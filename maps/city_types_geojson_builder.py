@@ -1,8 +1,7 @@
 import json
 import os
 
-from common import _mongo as mongo_utils
-from tiles import tiles
+from common import _mongo as mongo_utils, tiles
 
 
 def geojson_dict_formatter(city_type_tiled_object, zoom):

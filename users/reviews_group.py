@@ -2,7 +2,7 @@ import datetime
 import sys
 
 # from common import prepro_user
-from common import _mongo as mongo_utils
+from common import mongo_utils
 
 
 def user_reviews_prepare(user):
