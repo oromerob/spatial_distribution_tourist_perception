@@ -2,7 +2,7 @@ import json
 import os
 
 from common import mongo_utils, tiles
-from city_areas import city_types_map
+from __old__.city_areas import city_types_map
 
 
 def review_venue_ids_get(users, cluster, venue_id_dict):

@@ -1,5 +1,5 @@
-from common import clusters as clusters_db, prepro_business as prepro_business_db, venues as venues_db, _mongo as mongo_utils
-from city_areas.city_types_map import category_to_city_type
+from common import clusters as clusters_db, venues as venues_db, _mongo as mongo_utils
+from __old__.city_areas.city_types_map import category_to_city_type
 
 
 def city_types_dict_update(cluster_id, tile, zoom, city_type, city_types_dict):

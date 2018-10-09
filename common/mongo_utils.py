@@ -14,7 +14,7 @@ def mongo_get(collection=None, filter=None, fields=None, page_size=100000):
         find_params.append(fields)
 
     client = pymongo.MongoClient('localhost', 27018)
-    db = client.yelp
+    db = client.cett
     col = db[collection]
 
     page = 0
@@ -43,7 +43,7 @@ def mongo_get(collection=None, filter=None, fields=None, page_size=100000):
 
 def batch_update(items, collection=None, update=None, page_size=500):
     client = pymongo.MongoClient('localhost', 27018)
-    db = client.yelp
+    db = client.cett
     col = db[collection]
 
     page = 0
@@ -78,7 +78,7 @@ def batch_update(items, collection=None, update=None, page_size=500):
 
 def batch_upsert(items, collection=None, update=None, page_size=500):
     client = pymongo.MongoClient('localhost', 27018)
-    db = client.yelp
+    db = client.cett
     col = db[collection]
 
     page = 0
