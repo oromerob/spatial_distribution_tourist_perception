@@ -161,3 +161,5 @@ venv.bak/
 # docker database volume path
 database/
 __tmp/
+public_venues_category.csv
+public_venues_category.xlsx
