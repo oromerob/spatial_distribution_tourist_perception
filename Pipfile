@@ -7,6 +7,9 @@ name = "pypi"
 pymongo = "*"
 
 [dev-packages]
+docker-compose = "*"
+pytest = "*"
+pyhamcrest = "*"
 
 [requires]
 python_version = "3.6"

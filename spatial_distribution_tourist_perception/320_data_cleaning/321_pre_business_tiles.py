@@ -1,9 +1,9 @@
 from spatial_distribution_tourist_perception.common import tiles
-from spatial_distribution_tourist_perception.common import mongo_utils
+from spatial_distribution_tourist_perception.common import mongo_functions
 
 
 def prepare():
-    businesses = mongo_utils.mongo_get(collection='business')
+    businesses = mongo_functions.mongo_get(collection='business')
     pre_businessess = []
     for business in businesses:
 
@@ -20,7 +20,7 @@ def prepare():
         except Exception as e:
             raise
 
-    mongo_utils.batch_upsert(pre_businessess, collection='pre_business', update='{"$set": item}')
+    mongo_functions.batch_upsert(pre_businessess, collection='pre_business', update='{"$set": item}')
 
 
 if __name__ == '__main__':

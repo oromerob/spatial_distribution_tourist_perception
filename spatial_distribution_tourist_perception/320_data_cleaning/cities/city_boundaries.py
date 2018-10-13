@@ -1,5 +1,5 @@
 from spatial_distribution_tourist_perception.common import tiles as tile_utils
-from spatial_distribution_tourist_perception.common import mongo_utils
+from spatial_distribution_tourist_perception.common import mongo_functions
 
 
 def cluster_process(tiles, initial_tile, clustered, cluster_):
@@ -51,17 +51,17 @@ def venues_group_by_tile15(venues):
 
 
 if __name__ == '__main__':
-    clusters = mongo_utils.mongo_get(collection='clusters')
+    clusters = mongo_functions.mongo_get(collection='clusters')
 
     for cluster in clusters:
-        venues = mongo_utils.mongo_get(collection='venues_2', filter={'cluster_id': cluster['_id']})
+        venues = mongo_functions.mongo_get(collection='venues_2', filter={'cluster_id': cluster['_id']})
         tile15_dict = venues_group_by_tile15(venues)
         tile15_ordered_list = sorted([(key, value) for key, value in tile15_dict.items()], key=lambda x: len(x[1]), reverse=True)
         city_cluster = clusterize(set([tile for tile in tile15_dict.keys()]), tile15_ordered_list[0][0])
         city_venues = []
         for tile in city_cluster[0]:
             city_venues += tile15_dict[tile]
-        mongo_utils.batch_upsert(city_venues, collection='city_venues_2', update="{'$set': item}")
+        mongo_functions.batch_upsert(city_venues, collection='city_venues_2', update="{'$set': item}")
         city = {
             '_id': cluster['_id'],
             'name': cluster['name'],
@@ -69,5 +69,5 @@ if __name__ == '__main__':
             'cluster_id': cluster['_id'],
             'venues_count': len(city_venues)
         }
-        mongo_utils.batch_upsert([city], collection='cities_2', update="{'$set': item}")
+        mongo_functions.batch_upsert([city], collection='cities_2', update="{'$set': item}")
         print('yey')

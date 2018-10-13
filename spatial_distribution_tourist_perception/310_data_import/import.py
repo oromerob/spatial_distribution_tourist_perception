@@ -1,7 +1,7 @@
 import json
 import os
 
-from spatial_distribution_tourist_perception.common import mongo_utils
+from spatial_distribution_tourist_perception.common import mongo_functions
 
 DATASET_PATH = os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'dataset')
 
@@ -19,7 +19,7 @@ def data_import(filename):
     #     return
     data = data_read(filename)
     bulk = data_save_prepare(id_field, data)
-    mongo_utils.batch_upsert(bulk, collection=concept, update="{'$set': item}")
+    mongo_functions.batch_upsert(bulk, collection=concept, update="{'$set': item}")
 
 
 def data_save_prepare(id_field, bulk):

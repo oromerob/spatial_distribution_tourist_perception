@@ -1,5 +1,5 @@
-from spatial_distribution_tourist_perception.common.public_venue_categories_2 import venue_categories
-from spatial_distribution_tourist_perception.common import mongo_utils
+from spatial_distribution_tourist_perception.common.public_venue_categories import venue_categories
+from spatial_distribution_tourist_perception.common import mongo_functions
 
 
 def category_dict_prepare():
@@ -30,10 +30,10 @@ def venues_prepare(venues, category_dict, cluster):
 
 if __name__ == '__main__':
     category_dict = category_dict_prepare()
-    for cluster in mongo_utils.mongo_get(collection='clusters', fields={'tiles': 1, 'name': 1}):
+    for cluster in mongo_functions.mongo_get(collection='clusters', fields={'tiles': 1, 'name': 1}):
         print('processing venues for ', cluster['name'])
-        business_ids = [doc['_id'] for doc in mongo_utils.mongo_get(collection='prepro_business', filter={"tile10": {'$in': cluster['tiles']}}, fields={})]
-        business = mongo_utils.mongo_get(collection='business', filter={"_id": {'$in': business_ids}}, fields={'name': 1, 'categories': 1})
+        business_ids = [doc['_id'] for doc in mongo_functions.mongo_get(collection='prepro_business', filter={"tile10": {'$in': cluster['tiles']}}, fields={})]
+        business = mongo_functions.mongo_get(collection='business', filter={"_id": {'$in': business_ids}}, fields={'name': 1, 'categories': 1})
         venues = venues_prepare(business, category_dict, cluster)
-        mongo_utils.batch_upsert(venues, collection='venues_2', update='{"$set": item}')
+        mongo_functions.batch_upsert(venues, collection='venues_2', update='{"$set": item}')
         print('Inserted {} items for "{}" cluster'.format(len(venues), cluster['name']))

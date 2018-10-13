@@ -1,4 +1,4 @@
-from spatial_distribution_tourist_perception.common import mongo_utils
+from spatial_distribution_tourist_perception.common import mongo_functions
 
 
 def dissimilarity_calculate():
@@ -6,7 +6,7 @@ def dissimilarity_calculate():
 
 
 def main():
-    for cluster in mongo_utils.mongo_get(collection='clusters', fields={'tiles': 1, 'name': 1}):
+    for cluster in mongo_functions.mongo_get(collection='clusters', fields={'tiles': 1, 'name': 1}):
         pass
 
 
