@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/yelp_dataset_utils.iml" filepath="$PROJECT_DIR$/.idea/yelp_dataset_utils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/spatial_distribution_tourist_perception.iml" filepath="$PROJECT_DIR$/.idea/spatial_distribution_tourist_perception.iml" />
     </modules>
   </component>
 </project>
