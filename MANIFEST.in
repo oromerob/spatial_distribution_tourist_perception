@@ -1,0 +1,5 @@
+graft docs
+prune docs/_*
+include tox.ini
+include *.md
+graft test
