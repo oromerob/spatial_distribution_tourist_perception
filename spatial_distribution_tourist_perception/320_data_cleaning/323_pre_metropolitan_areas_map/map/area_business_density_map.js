@@ -103,10 +103,10 @@ function mapInit() {
                 var layer = e.target;
 
                 layer.setStyle({
-                    weight: 5,
+                    weight: 3,
                     color: '#666',
                     dashArray: '',
-                    fillOpacity: 0.7
+                    fillOpacity: 0.8
                 });
 
                 if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
