@@ -21,10 +21,13 @@ def mongo_get(collection=None, filter=None, fields=None, page_size=100000):
 
     res = []
 
+    print()
     while True:
-        print('Querying "{}" page {}...'.format(collection, page))
+        sys.stdout.write('\rQuerying "{}" page {}...'.format(collection, page))
+        sys.stdout.flush()
+        # print('Querying "{}" page {}...'.format(collection, page))
 
-        cursor = col.find(*find_params).skip(page_size * page).limit(page)
+        cursor = col.find(*find_params).skip(page_size * page).limit(page_size)
 
         _res = [doc for doc in cursor]
 

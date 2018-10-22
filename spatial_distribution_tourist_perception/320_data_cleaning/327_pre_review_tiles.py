@@ -16,6 +16,7 @@ def prepare():
             review['tile15'] = business_dict[review['business_id']]['tile15']
             review['tile18'] = business_dict[review['business_id']]['tile18']
             review['norm_categories'] = business_dict[review['business_id']]['norm_categories']
+            review['city_area'] = area['_id']
         mongo_functions.batch_upsert(reviews, collection='pre_review', update="{'$set': item}")
 
 
