@@ -44,6 +44,26 @@ def mongo_get(collection=None, filter=None, fields=None, page_size=100000):
     return res
 
 
+def mongo_distinct_get(field, collection=None, filter=None):
+    if collection is None:
+        raise Exception
+    if filter is None:
+        filter = {}
+    find_params = [filter]
+
+    client = pymongo.MongoClient('localhost', 27018)
+    db = client.cett
+    col = db[collection]
+
+    if filter is None:
+        res = [doc for doc in col.distinct(field)]
+    else:
+        cursor = col.find(*find_params).distinct(field)
+        res = [doc for doc in cursor]
+    client.close()
+    return res
+
+
 def batch_update(items, collection=None, update=None, page_size=500):
     client = pymongo.MongoClient('localhost', 27018)
     db = client.cett
