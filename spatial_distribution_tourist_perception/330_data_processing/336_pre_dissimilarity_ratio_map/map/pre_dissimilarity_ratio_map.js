@@ -1,6 +1,7 @@
 'use strict';
 
 var categories = [
+    'All',
     'Monuments',
     'Museums & art galleries',
     'Cinemas & concert & theatres',

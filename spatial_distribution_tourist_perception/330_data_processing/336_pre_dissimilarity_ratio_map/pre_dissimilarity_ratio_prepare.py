@@ -32,6 +32,7 @@ def ratios_group(businesses, zoom):
         for category in business['norm_categories']:
             for year, ratio in business['ratio_yearly'].items():
                 business_dict[tile][category][year].append(ratio)
+                business_dict[tile]['All'][year].append(ratio)
     return business_dict
 
 
@@ -60,6 +61,7 @@ def features_prepare(ratios_dict, zoom):
 def _business_categories_get():
     global categories
     categories = mongo_functions.mongo_distinct_get('norm_categories', collection='pre_business')
+    categories.append('All')
 
 
 def geojson_file_create(area_name, zoom, features):
