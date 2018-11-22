@@ -1,17 +1,17 @@
 'use strict';
 
-var categories = [
-    'Monuments',
-    'Museums & art galleries',
-    'Cinemas & concert & theatres',
-    'Nightclubs & bars',
-    'Cafés & restaurants',
-    'Shops & consumptive activies',
-    'Offices & work premises',
-    'Sport stadia & events',
-    'Public mobility',
-    'Private transports'
-];
+var categories = {
+    'Monuments': 'Monuments, landmark & heritage',
+    'Museums & art galleries': 'Museums, art galleries',
+    'Cinemas & concert & theatres': 'Cinemas, concert venues & theatres',
+    'Nightclubs & bars': 'Nightclubs, bars & nightlife offer',
+    'Cafés & restaurants': 'Cafes, bars, restaurants & catering activities',
+    'Shops & consumptive activies': 'Shops and stores',
+    'Offices & work premises': 'Offices and diverse work premises',
+    'Sport stadia & events': 'Sport venues and related services',
+    'Public mobility': 'Public mobility infrastructures & services',
+    'Private transports': 'Private transport services'
+};
 var cities;
 var currentCity;
 var currentCategory;
@@ -65,10 +65,10 @@ function areaSelectInit() {
 
 function categorySelectInit() {
     var categorySelect = document.getElementById("category");
-    for(var i = 0; i < categories.length; i++) {
+    for(var category in categories) {
         var option = document.createElement("option");
-        option.text = categories[i];
-        option.value = categories[i];
+        option.text = categories[category];
+        option.value = category;
         categorySelect.add(option);
     }
     categorySelect.addEventListener("change", function() {
@@ -93,7 +93,7 @@ function page_init() {
     loadJSON('areas.json', function(response) {
         cities = JSON.parse(response);
         currentCity = Object.keys(cities)[0];
-        currentCategory = categories[0];
+        currentCategory = Object.keys(categories)[0];
         zoomSelectInit();
         areaSelectInit();
         categorySelectInit();

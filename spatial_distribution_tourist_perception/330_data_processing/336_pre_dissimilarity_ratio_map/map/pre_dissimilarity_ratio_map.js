@@ -1,18 +1,18 @@
 'use strict';
 
-var categories = [
-    'All',
-    'Monuments',
-    'Museums & art galleries',
-    'Cinemas & concert & theatres',
-    'Nightclubs & bars',
-    'Cafés & restaurants',
-    'Shops & consumptive activies',
-    'Offices & work premises',
-    'Sport stadia & events',
-    'Public mobility',
-    'Private transports'
-];
+var categories = {
+    'All': 'All',
+    'Monuments': 'Monuments, landmark & heritage',
+    'Museums & art galleries': 'Museums, art galleries',
+    'Cinemas & concert & theatres': 'Cinemas, concert venues & theatres',
+    'Nightclubs & bars': 'Nightclubs, bars & nightlife offer',
+    'Cafés & restaurants': 'Cafes, bars, restaurants & catering activities',
+    'Shops & consumptive activies': 'Shops and stores',
+    'Offices & work premises': 'Offices and diverse work premises',
+    'Sport stadia & events': 'Sport venues and related services',
+    'Public mobility': 'Public mobility infrastructures & services',
+    'Private transports': 'Private transport services'
+};
 var years = [
     '2017',
     '2016',
@@ -99,10 +99,10 @@ function yearSelectInit() {
 
 function categorySelectInit() {
     var categorySelect = document.getElementById("category");
-    for(var i = 0; i < categories.length; i++) {
+    for(var category in categories) {
         var option = document.createElement("option");
-        option.text = categories[i];
-        option.value = categories[i];
+        option.text = categories[category];
+        option.value = category;
         categorySelect.add(option);
     }
     categorySelect.addEventListener("change", function() {
@@ -113,21 +113,11 @@ function categorySelectInit() {
     return;
 }
 
-// function visualisationTypesSelectInit() {
-//     var visualisationTypesSelect = document.getElementById("visualisationTypes");
-//     visualisationTypesSelect.addEventListener("change", function() {
-//         logWrite(visualisationTypesSelect.value);
-//         currentVisualisationType = visualisationTypesSelect.value;
-//         mapInit();
-//     });
-//     return;
-// }
-
 function page_init() {
     loadJSON('areas.json', function(response) {
         cities = JSON.parse(response);
         currentCity = Object.keys(cities)[0];
-        currentCategory = categories[0];
+        currentCategory = Object.keys(categories)[0];
         currentYear = years[0];
         zoomSelectInit();
         areaSelectInit();
@@ -245,30 +235,6 @@ function map_prepare(geojson, callback) {
                d > -0.2 * max ? '#FED976' :
                d > -0.6 * max ? '#FD8D3C' :
                    '#FC4E2A';
-        // switch (currentVisualisationType) {
-        //     case 'lineal':
-        //         var diff = 0.111;
-        //         return d > max * diff * 8 ? '#800026' :
-        //                d > max * diff * 7 ? '#BD0026' :
-        //                d > max * diff * 6 ? '#E31A1C' :
-        //                d > max * diff * 5 ? '#FC4E2A' :
-        //                d > max * diff * 4 ? '#FD8D3C' :
-        //                d > max * diff * 3 ? '#FEB24C' :
-        //                d > max * diff * 2 ? '#FED976' :
-        //                d > max * diff ? '#FFEDA0' :
-        //                           '#ffffff';
-        //     case 'exponential':
-        //         // every range is half the previous
-        //         return d > max / 2 ? '#800026' :
-        //                d > max / 4 ? '#BD0026' :
-        //                d > max / 8 ? '#E31A1C' :
-        //                d > max / 16 ? '#FC4E2A' :
-        //                d > max / 32 ? '#FD8D3C' :
-        //                d > max / 64 ? '#FEB24C' :
-        //                d > max / 128 ? '#FED976' :
-        //                d > max / 256 ? '#FFEDA0' :
-        //                           '#ffffff';
-        // }
     }
     callback(getColor, max);
 }
