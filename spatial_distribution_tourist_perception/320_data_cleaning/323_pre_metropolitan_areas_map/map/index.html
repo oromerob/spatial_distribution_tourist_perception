@@ -45,6 +45,71 @@
 
 <div id="mapid"></div>
 
+
+<div class='my-legend'>
+<div id="legend-title" class='legend-title'></div>
+<div class='legend-scale'>
+  <ul class='legend-labels'>
+    <li id="legend-range-1"></li>
+    <li id="legend-range-2"></li>
+    <li id="legend-range-3"></li>
+    <li id="legend-range-4"></li>
+    <li id="legend-range-5"></li>
+    <li id="legend-range-6"></li>
+    <li id="legend-range-7"></li>
+    <li id="legend-range-8"></li>
+    <li id="legend-range-9"></li>
+  </ul>
+</div>
+<!--<div class='legend-source'>Source: <a href="#link to source">Name of source</a></div>-->
+</div>
+
+<style type='text/css'>
+    .my-legend {
+        position: absolute;
+        z-index: 10;
+        left: 15px;
+        bottom: 15px;
+        padding: 15px;
+        background-color: white;
+    }
+  .my-legend .legend-title {
+    text-align: left;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 90%;
+    }
+  .my-legend .legend-scale ul {
+    margin: 0;
+    padding: 0;
+    float: left;
+    list-style: none;
+    }
+  .my-legend .legend-scale ul li {
+    display: block;
+    float: left;
+    width: 50px;
+    margin-bottom: 6px;
+    text-align: center;
+    font-size: 80%;
+    list-style: none;
+    }
+  .my-legend ul.legend-labels li span {
+    display: block;
+    float: left;
+    height: 15px;
+    width: 50px;
+    }
+  .my-legend .legend-source {
+    font-size: 70%;
+    color: #999;
+    clear: both;
+    }
+  .my-legend a {
+    color: #777;
+    }
+</style>
+
 <script src="area_business_density_map.js"></script>
 
 </body>

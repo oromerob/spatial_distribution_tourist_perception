@@ -82,12 +82,53 @@ function geojsonLoad(callback) {
     });
 }
 
+function legendUpdate(max, callback) {
+    var legendTitle = currentCity + ' business density';
+    // console.log(legendTitle);
+    document.getElementById('legend-title').innerText = legendTitle;
+    if (currentVisualisationType === 'lineal') {
+        // document.getElementById('legend-range-1').innerHTML = '<span style=\'background:#ffffff;\'></span>0 - 11.1%';
+        // document.getElementById('legend-range-2').innerHTML = '<span style=\'background:#FFEDA0;\'></span>22.2%';
+        // document.getElementById('legend-range-3').innerHTML = '<span style=\'background:#FED976;\'></span>33.3%';
+        // document.getElementById('legend-range-4').innerHTML = '<span style=\'background:#FEB24C;\'></span>44.4%';
+        // document.getElementById('legend-range-5').innerHTML = '<span style=\'background:#FD8D3C;\'></span>55.5%';
+        // document.getElementById('legend-range-6').innerHTML = '<span style=\'background:#FC4E2A;\'></span>66.6%';
+        // document.getElementById('legend-range-7').innerHTML = '<span style=\'background:#E31A1C;\'></span>77.7%';
+        // document.getElementById('legend-range-8').innerHTML = '<span style=\'background:#BD0026;\'></span>88.8%';
+        // document.getElementById('legend-range-9').innerHTML = '<span style=\'background:#800026;\'></span>100%';
+        var diff = 0.111;
+        document.getElementById('legend-range-1').innerHTML = '<span style=\'background:#ffffff;\'></span>0 - ' + Math.floor(max * diff);
+        document.getElementById('legend-range-2').innerHTML = '<span style=\'background:#FFEDA0;\'></span>' + Math.floor(max * diff * 2);
+        document.getElementById('legend-range-3').innerHTML = '<span style=\'background:#FED976;\'></span>' + Math.floor(max * diff * 3);
+        document.getElementById('legend-range-4').innerHTML = '<span style=\'background:#FEB24C;\'></span>' + Math.floor(max * diff * 4);
+        document.getElementById('legend-range-5').innerHTML = '<span style=\'background:#FD8D3C;\'></span>' + Math.floor(max * diff * 5);
+        document.getElementById('legend-range-6').innerHTML = '<span style=\'background:#FC4E2A;\'></span>' + Math.floor(max * diff * 6);
+        document.getElementById('legend-range-7').innerHTML = '<span style=\'background:#E31A1C;\'></span>' + Math.floor(max * diff * 7);
+        document.getElementById('legend-range-8').innerHTML = '<span style=\'background:#BD0026;\'></span>' + Math.floor(max * diff * 8);
+        document.getElementById('legend-range-9').innerHTML = '<span style=\'background:#800026;\'></span>' + max;
+    }
+    else {
+        document.getElementById('legend-range-1').innerHTML = '<span style=\'background:#ffffff;\'></span>0 - ' + (1 < max / 256 ? Math.floor(max / 256) : '< 1');
+        document.getElementById('legend-range-2').innerHTML = '<span style=\'background:#FFEDA0;\'></span>' + (1 < max / 128 ? Math.floor(max / 128) : '< 1');
+        document.getElementById('legend-range-3').innerHTML = '<span style=\'background:#FED976;\'></span>' + (1 < max / 64 ? Math.floor(max / 64) : '< 1');
+        document.getElementById('legend-range-4').innerHTML = '<span style=\'background:#FEB24C;\'></span>' + (1 < max / 32 ? Math.floor(max / 32) : '< 1');
+        document.getElementById('legend-range-5').innerHTML = '<span style=\'background:#FD8D3C;\'></span>' + (1 < max / 16 ? Math.floor(max / 16) : '< 1');
+        document.getElementById('legend-range-6').innerHTML = '<span style=\'background:#FC4E2A;\'></span>' + (1 < max / 8 ? Math.floor(max / 8) : '< 1');
+        document.getElementById('legend-range-7').innerHTML = '<span style=\'background:#E31A1C;\'></span>' + (1 < max / 4 ? Math.floor(max / 4) : '< 1');
+        document.getElementById('legend-range-8').innerHTML = '<span style=\'background:#BD0026;\'></span>' + (1 < max / 2 ? Math.floor(max / 2) : '< 1');
+        document.getElementById('legend-range-9').innerHTML = '<span style=\'background:#800026;\'></span>' + max;
+    }
+
+    callback();
+}
+
 function mapInit() {
     if (mymap != null) {
         mymap.remove()
     }
     geojsonLoad(function(geojson) {
         map_prepare(geojson, function(getColor, max) {
+            legendUpdate(max, () => {});
             mymap = L.map('mapid').setView(cities[currentCity].center, zoom);
 
             L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {

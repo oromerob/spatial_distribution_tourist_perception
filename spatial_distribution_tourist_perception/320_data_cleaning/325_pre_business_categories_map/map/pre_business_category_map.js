@@ -113,95 +113,128 @@ function geojsonLoad(callback) {
     });
 }
 
+function legendUpdate(max, callback) {
+    var legendTitle = currentCity + ' ' + currentCategory + ' density';
+    // console.log(legendTitle);
+    document.getElementById('legend-title').innerText = legendTitle;
+    if (currentVisualisationType === 'lineal') {
+        var diff = 0.111;
+        document.getElementById('legend-range-1').innerHTML = '<span style=\'background:#ffffff;\'></span>0 - ' + Math.floor(max * diff);
+        document.getElementById('legend-range-2').innerHTML = '<span style=\'background:#FFEDA0;\'></span>' + Math.floor(max * diff * 2);
+        document.getElementById('legend-range-3').innerHTML = '<span style=\'background:#FED976;\'></span>' + Math.floor(max * diff * 3);
+        document.getElementById('legend-range-4').innerHTML = '<span style=\'background:#FEB24C;\'></span>' + Math.floor(max * diff * 4);
+        document.getElementById('legend-range-5').innerHTML = '<span style=\'background:#FD8D3C;\'></span>' + Math.floor(max * diff * 5);
+        document.getElementById('legend-range-6').innerHTML = '<span style=\'background:#FC4E2A;\'></span>' + Math.floor(max * diff * 6);
+        document.getElementById('legend-range-7').innerHTML = '<span style=\'background:#E31A1C;\'></span>' + Math.floor(max * diff * 7);
+        document.getElementById('legend-range-8').innerHTML = '<span style=\'background:#BD0026;\'></span>' + Math.floor(max * diff * 8);
+        document.getElementById('legend-range-9').innerHTML = '<span style=\'background:#800026;\'></span>' + max;
+    }
+    else {
+        document.getElementById('legend-range-1').innerHTML = '<span style=\'background:#ffffff;\'></span>0 - ' + (1 < max / 256 ? Math.floor(max / 256) : '< 1');
+        document.getElementById('legend-range-2').innerHTML = '<span style=\'background:#FFEDA0;\'></span>' + (1 < max / 128 ? Math.floor(max / 128) : '< 1');
+        document.getElementById('legend-range-3').innerHTML = '<span style=\'background:#FED976;\'></span>' + (1 < max / 64 ? Math.floor(max / 64) : '< 1');
+        document.getElementById('legend-range-4').innerHTML = '<span style=\'background:#FEB24C;\'></span>' + (1 < max / 32 ? Math.floor(max / 32) : '< 1');
+        document.getElementById('legend-range-5').innerHTML = '<span style=\'background:#FD8D3C;\'></span>' + (1 < max / 16 ? Math.floor(max / 16) : '< 1');
+        document.getElementById('legend-range-6').innerHTML = '<span style=\'background:#FC4E2A;\'></span>' + (1 < max / 8 ? Math.floor(max / 8) : '< 1');
+        document.getElementById('legend-range-7').innerHTML = '<span style=\'background:#E31A1C;\'></span>' + (1 < max / 4 ? Math.floor(max / 4) : '< 1');
+        document.getElementById('legend-range-8').innerHTML = '<span style=\'background:#BD0026;\'></span>' + (1 < max / 2 ? Math.floor(max / 2) : '< 1');
+        document.getElementById('legend-range-9').innerHTML = '<span style=\'background:#800026;\'></span>' + max;
+    }
+
+    callback();
+}
+
 function mapInit() {
     if (mymap != null) {
         mymap.remove()
     }
     geojsonLoad(function(geojson) {
         map_prepare(geojson, function(getColor, max) {
-            mymap = L.map('mapid').setView(cities[currentCity].center, zoom);
+            legendUpdate(max, function() {
+                mymap = L.map('mapid').setView(cities[currentCity].center, zoom);
 
-            L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-                maxZoom: 18,
-                id: 'mapbox.light',
-                accessToken: 'pk.eyJ1Ijoib3JvbWVyb2IiLCJhIjoiY2psaTU0cnQwMWtpMzNycXU1am01cXRyaSJ9.ELGdPqv5okQwf6pzT22nKQ'
-            }).addTo(mymap);
+                L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+                    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                    maxZoom: 18,
+                    id: 'mapbox.light',
+                    accessToken: 'pk.eyJ1Ijoib3JvbWVyb2IiLCJhIjoiY2psaTU0cnQwMWtpMzNycXU1am01cXRyaSJ9.ELGdPqv5okQwf6pzT22nKQ'
+                }).addTo(mymap);
 
-            var geojsonObject;
+                var geojsonObject;
 
-            function highlightFeature(e) {
-                var layer = e.target;
+                function highlightFeature(e) {
+                    var layer = e.target;
 
-                layer.setStyle({
-                    weight: 3,
-                    color: '#666',
-                    dashArray: '',
-                    fillOpacity: 0.8
-                });
+                    layer.setStyle({
+                        weight: 3,
+                        color: '#666',
+                        dashArray: '',
+                        fillOpacity: 0.8
+                    });
 
-                if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-                    layer.bringToFront();
+                    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+                        layer.bringToFront();
+                    }
+                    info.update(layer.feature.properties);
                 }
-                info.update(layer.feature.properties);
-            }
 
-            function resetHighlight(e) {
-                geojsonObject.resetStyle(e.target);
-                info.update();
-            }
+                function resetHighlight(e) {
+                    geojsonObject.resetStyle(e.target);
+                    info.update();
+                }
 
-            function zoomToFeature(e) {
-                mymap.fitBounds(e.target.getBounds());
-            }
+                function zoomToFeature(e) {
+                    mymap.fitBounds(e.target.getBounds());
+                }
 
-            function onEachFeature(feature, layer) {
-                layer.on({
-                    mouseover: highlightFeature,
-                    mouseout: resetHighlight,
-                    click: zoomToFeature
-                });
-            }
+                function onEachFeature(feature, layer) {
+                    layer.on({
+                        mouseover: highlightFeature,
+                        mouseout: resetHighlight,
+                        click: zoomToFeature
+                    });
+                }
 
 
-            var info = L.control();
+                var info = L.control();
 
-            info.onAdd = function (map) {
-                this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-                this.update();
-                return this._div;
-            };
-
-            // method that we will use to update the control based on feature properties passed
-            info.update = function (props) {
-                this._div.innerHTML = '<h4>' + currentCategory + '</h4>' +  (props ?
-                    props[currentCategory] + ' business' : 'Hover over a tile');
-            };
-
-            function style(feature) {
-                return {
-                    fillColor: getColor(feature.properties[currentCategory]),
-                    weight: 0.5,
-                    opacity:
-                        feature.properties[currentCategory] < max / 256 && currentVisualisationType === 'exponential' ? 0:
-                        feature.properties[currentCategory] < max * 0.111 && currentVisualisationType === 'lineal'? 0:
-                        1,
-                    color: 'white',
-                    dashArray: '3',
-                    fillOpacity:
-                        feature.properties[currentCategory] < max / 256 && currentVisualisationType === 'exponential' ? 0:
-                        feature.properties[currentCategory] < max * 0.111 && currentVisualisationType === 'lineal'? 0:
-                        feature.properties[currentCategory] / (max * 2) + 0.3
-                        // 0.5
+                info.onAdd = function (map) {
+                    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+                    this.update();
+                    return this._div;
                 };
-            }
 
-            info.addTo(mymap);
+                // method that we will use to update the control based on feature properties passed
+                info.update = function (props) {
+                    this._div.innerHTML = '<h4>' + currentCategory + '</h4>' +  (props ?
+                        props[currentCategory] + ' business' : 'Hover over a tile');
+                };
 
-            geojsonObject = L.geoJSON(geojson, {
-                style: style,
-                onEachFeature: onEachFeature
-            }).addTo(mymap);
+                function style(feature) {
+                    return {
+                        fillColor: getColor(feature.properties[currentCategory]),
+                        weight: 0.5,
+                        opacity:
+                            feature.properties[currentCategory] < max / 256 && currentVisualisationType === 'exponential' ? 0:
+                            feature.properties[currentCategory] < max * 0.111 && currentVisualisationType === 'lineal'? 0:
+                            1,
+                        color: 'white',
+                        dashArray: '3',
+                        fillOpacity:
+                            feature.properties[currentCategory] < max / 256 && currentVisualisationType === 'exponential' ? 0:
+                            feature.properties[currentCategory] < max * 0.111 && currentVisualisationType === 'lineal'? 0:
+                            feature.properties[currentCategory] / (max * 2) + 0.3
+                            // 0.5
+                    };
+                }
+
+                info.addTo(mymap);
+
+                geojsonObject = L.geoJSON(geojson, {
+                    style: style,
+                    onEachFeature: onEachFeature
+                }).addTo(mymap);
+            })
         })
     })
 }

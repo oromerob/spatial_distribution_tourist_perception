@@ -139,12 +139,28 @@ function geojsonLoad(callback) {
     });
 }
 
+function legendUpdate(max, callback) {
+    var legendTitle = currentCity + ' ' + currentCategory + ' dissimilarity ratio';
+    // console.log(legendTitle);
+    document.getElementById('legend-title').innerText = legendTitle;
+
+    document.getElementById('legend-range-1').innerHTML = '<span style=\'background:#84bb56;\'></span>1 - 0.6';
+    document.getElementById('legend-range-2').innerHTML = '<span style=\'background:#c1ca66;\'></span>0.2';
+    document.getElementById('legend-range-3').innerHTML = '<span style=\'background:#FED976;\'></span>-0.2';
+    document.getElementById('legend-range-4').innerHTML = '<span style=\'background:#FD8D3C;\'></span>-0.6';
+    document.getElementById('legend-range-5').innerHTML = '<span style=\'background:#FC4E2A;\'></span>-1';
+
+
+    callback();
+}
+
 function mapInit() {
     if (mymap != null) {
         mymap.remove()
     }
     geojsonLoad(function(geojson) {
         map_prepare(geojson, function(getColor, max) {
+            legendUpdate(max, () => {});
             mymap = L.map('mapid').setView(cities[currentCity].center, zoom);
 
             L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
