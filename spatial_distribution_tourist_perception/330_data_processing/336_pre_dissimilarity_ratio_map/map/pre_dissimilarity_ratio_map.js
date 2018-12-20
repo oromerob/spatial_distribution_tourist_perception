@@ -140,7 +140,7 @@ function geojsonLoad(callback) {
 }
 
 function legendUpdate(max, callback) {
-    var legendTitle = currentCity + ' ' + currentCategory + ' dissimilarity ratio';
+    var legendTitle = currentCity + ' ' + currentCategory + ' ratio';
     // console.log(legendTitle);
     document.getElementById('legend-title').innerText = legendTitle;
 
